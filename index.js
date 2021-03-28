@@ -5,7 +5,7 @@ const server = require('http').Server(app)
 const io = require('socket.io')(server,{cors:{origin:"*"}})
 
 app.use(express.json())
-app.use(express.static("public"))
+app.use(express.static("build"))
 
 const rooms = new Map()
 
