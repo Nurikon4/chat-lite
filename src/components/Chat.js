@@ -6,15 +6,17 @@ function Chat({ users, messages, userName, roomId, onAddMessage }) {
     const [messageValue, setMessageValue] = React.useState('');
     const messagesRef = React.useRef(null);
 
-    const onSendMessage = () => {
-        socket.emit('ROOM:NEW_MESSAGE', {
-            userName,
-            roomId,
-            text: messageValue,
-        });
-        onAddMessage({ userName, text: messageValue });
-        setMessageValue('');
-    };
+        const onSendMessage = (e) => {
+            if(e.key == 'Enter' || e.type == 'click'){
+            socket.emit('ROOM:NEW_MESSAGE', {
+                userName,
+                roomId,
+                text: messageValue,
+            })
+            onAddMessage({ userName, text: messageValue });
+            setMessageValue('');
+        }
+    }
 
     React.useEffect(() => {
         messagesRef.current.scrollTo(0, 99999);
@@ -44,7 +46,8 @@ function Chat({ users, messages, userName, roomId, onAddMessage }) {
                     ))}
                 </div>
                 <form>
-                    <textarea
+                    <textarea 
+                        onKeyPress={onSendMessage}
                         value={messageValue}
                         onChange={(e) => setMessageValue(e.target.value)}
                         className="form-control"
